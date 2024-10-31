@@ -50,7 +50,7 @@ dayjs.locale('fa');
 // }
 
 function getCurrentTime() {
-    const now = dayjs().tz('Asia/Tehran');
+    const now = dayjs();
     const gregorianDate = {
         year: now.year(),
         month: now.month() + 1, // dayjs months are 0-based
@@ -58,6 +58,9 @@ function getCurrentTime() {
         hour: now.hour(),
         minute: now.minute(),
     };
+
+    console.log(new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'short'}).format(now));
+
     const jDate = jalaali.toJalaali(gregorianDate.year, gregorianDate.month, gregorianDate.day);
     const formattedJalaliDate = `${jDate.jy}-${String(jDate.jm).padStart(2, '0')}-${String(jDate.jd).padStart(2, '0')} ${String(gregorianDate.hour).padStart(2, '0')}:${String(gregorianDate.minute).padStart(2, '0')}`;
     return formattedJalaliDate;
