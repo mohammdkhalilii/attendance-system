@@ -8,8 +8,10 @@ const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
 const dayjs = require('dayjs');
+const jalaliday = require('jalaliday');
 
-require('jalaliday'); // Initialize jalaliday plugin
+// Extend dayjs with jalaliday plugin
+dayjs.extend(jalaliday);
 
 
 // =========================
