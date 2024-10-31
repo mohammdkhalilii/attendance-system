@@ -50,7 +50,7 @@ dayjs.locale('fa');
 // }
 
 function getCurrentTime() {
-    const now = dayjs().tz('Asia/Tehran');
+    const now = dayjs();
     // const gregorianDate = {
     //     year: now.year(),
     //     month: now.month() + 1, // dayjs months are 0-based
