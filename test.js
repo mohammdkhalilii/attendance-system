@@ -7,11 +7,20 @@ const express = require('express');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
+
 const dayjs = require('dayjs');
 const jalaliday = require('jalaliday');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 
-// Extend dayjs with jalaliday plugin
+// Extend dayjs with plugins
 dayjs.extend(jalaliday);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+// Optionally set locale to 'fa' for Persian language support
+dayjs.locale('fa');
+
 
 
 // =========================
@@ -41,7 +50,7 @@ dayjs.extend(jalaliday);
 // }
 
 function getCurrentTime() {
-    return dayjs().calendar('jalali').format('jYYYY-jMM-jDD HH:mm');
+    return dayjs().tz('Asia/Tehran').format('jYYYY-jMM-jDD HH:mm');
 }
 
 // =========================
@@ -319,7 +328,7 @@ app.post('/check-rfid', (req, res) => {
 
         // Prepare notification message
         const actionText = action === 'Enter' ? 'وارد شد' : 'خارج شد';
-        const message = `${userName} ${actionText} در زمان (${currentTime} UTC+3:30)`;
+        const message = `${userName} ${actionText} در زمان (${currentTime})`;
 
         // Send notification to all authorized Telegram users
         authorizedUsers.forEach(chatId => {
