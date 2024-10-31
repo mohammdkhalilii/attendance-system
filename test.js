@@ -9,12 +9,12 @@ const fs = require('fs');
 const path = require('path');
 
 const dayjs = require('dayjs');
-const jalaliday = require('jalaliday');
+const jalaali = require('jalaali-js');
+
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 
 // Extend dayjs with plugins
-dayjs.extend(jalaliday);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -50,7 +50,17 @@ dayjs.locale('fa');
 // }
 
 function getCurrentTime() {
-    return dayjs().tz('Asia/Tehran').format('jYYYY-jMM-jDD HH:mm');
+    const now = dayjs().tz('Asia/Tehran');
+    const gregorianDate = {
+        year: now.year(),
+        month: now.month() + 1, // dayjs months are 0-based
+        day: now.date(),
+        hour: now.hour(),
+        minute: now.minute(),
+    };
+    const jDate = jalaali.toJalaali(gregorianDate.year, gregorianDate.month, gregorianDate.day);
+    const formattedJalaliDate = `${jDate.jYear}-${String(jDate.jMonth).padStart(2, '0')}-${String(jDate.jDay).padStart(2, '0')} ${String(gregorianDate.hour).padStart(2, '0')}:${String(gregorianDate.minute).padStart(2, '0')}`;
+    return formattedJalaliDate;
 }
 
 // =========================
