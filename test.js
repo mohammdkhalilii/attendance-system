@@ -59,6 +59,7 @@ function getCurrentTime() {
         minute: now.minute(),
     };
     const jDate = jalaali.toJalaali(gregorianDate.year, gregorianDate.month, gregorianDate.day);
+    console.log(jDate);
     const formattedJalaliDate = `${jDate.jYear}-${String(jDate.jMonth).padStart(2, '0')}-${String(jDate.jDay).padStart(2, '0')} ${String(gregorianDate.hour).padStart(2, '0')}:${String(gregorianDate.minute).padStart(2, '0')}`;
     return formattedJalaliDate;
 }
