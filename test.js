@@ -7,6 +7,10 @@ const express = require('express');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
+const dayjs = require('dayjs');
+
+require('jalaliday'); // Initialize jalaliday plugin
+
 
 // =========================
 // Helper Functions
@@ -16,21 +20,26 @@ const path = require('path');
  * Returns the current time in UTC+3:30 as a formatted string.
  * Format: YYYY-MM-DD HH:mm:ss
  */
+// function getCurrentTime() {
+//     const date = new Date();
+//     // Convert to UTC time in milliseconds
+//     const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+//     // Define the offset for UTC+3:30 in milliseconds
+//     const offset = 3.5 * 60 * 60 * 1000;
+//     const dateUTCplus3_30 = new Date(utc + offset);
+//     // Format the date as YYYY-MM-DD HH:mm:ss
+//     const year = dateUTCplus3_30.getFullYear();
+//     const month = String(dateUTCplus3_30.getMonth() + 1).padStart(2, '0');
+//     const day = String(dateUTCplus3_30.getDate()).padStart(2, '0');
+
+
+//     const hours = String(dateUTCplus3_30.getHours()).padStart(2, '0');
+//     const minutes = String(dateUTCplus3_30.getMinutes()).padStart(2, '0');
+//     return `${year}-${month}-${day} ${hours}:${minutes}`;
+// }
+
 function getCurrentTime() {
-    const date = new Date();
-    // Convert to UTC time in milliseconds
-    const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
-    // Define the offset for UTC+3:30 in milliseconds
-    const offset = 3.5 * 60 * 60 * 1000;
-    const dateUTCplus3_30 = new Date(utc + offset);
-    // Format the date as YYYY-MM-DD HH:mm:ss
-    const year = dateUTCplus3_30.getFullYear();
-    const month = String(dateUTCplus3_30.getMonth() + 1).padStart(2, '0');
-    const day = String(dateUTCplus3_30.getDate()).padStart(2, '0');
-    const hours = String(dateUTCplus3_30.getHours()).padStart(2, '0');
-    const minutes = String(dateUTCplus3_30.getMinutes()).padStart(2, '0');
-    const seconds = String(dateUTCplus3_30.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return dayjs().calendar('jalali').format('jYYYY-jMM-jDD HH:mm');
 }
 
 // =========================
@@ -180,7 +189,6 @@ bot.onText(/\/help/, (msg) => {
     const chatId = msg.chat.id;
     const helpMessage = `در اینجا دستورات قابل استفاده را مشاهده می‌کنید:
     /start - شروع تعامل با ربات
-    /help - نمایش پیام راهنما
     /weekly_report - دریافت ریپورت هفته‌ای
     /monthly_report - دریافت ریپورت ماهیانه
     `;
