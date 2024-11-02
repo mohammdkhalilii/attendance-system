@@ -345,7 +345,7 @@ app.post('/check-rfid', (req, res) => {
         saveAttendance(attendance);
 
         // Prepare notification message
-        const actionText = action === 'Enter' ? 'وارد شد🟢' : 'خارج شد🔴';
+        const actionText = action === 'Enter' ? '🟢 وارد شد' : '🔴 خارج شد';
         const message = `${userName} ${actionText} در  ${currentTime}`;
 
         // Send notification to all authorized Telegram users
