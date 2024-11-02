@@ -18,7 +18,7 @@ const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-dayjs.tz.setDefault("Asia/Tehran")
+// dayjs.tz.setDefault("Asia/Tehran")
 
 
 
@@ -62,8 +62,13 @@ function getCurrentTime() {
     //     minute: now.minute(),
     // };
     console.log(now,folan);
+    
     // const jalalJoon  = new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'short'}).format(folan);
-    const jalalJoon  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short'}).format(folan);
+    const jalalJoon  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short'}).format(now);
+    const jalalJoonz  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short'}).format(folan);
+
+
+    console.log(jalalJoon,jalalJoonz);
     
 
 
