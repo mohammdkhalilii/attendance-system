@@ -6,13 +6,14 @@ const { loadJSON, saveJSON } = require('../data/loadData');
 const config = require('../config/config');
 const { getCurrentTime } = require('../helpers/timeUtils');
 const { calculateReport } = require('../helpers/reportUtils');
-const TelegramBot = require('node-telegram-bot-api');
+
+const bot = require('../telegram/telegramBot'); // Import the existing bot instance
+const path = require('path');
 
 const authorizedUsersPath = require('path').join(__dirname, '..', 'data', 'authorized_users.json');
 const rfidTagsPath = require('path').join(__dirname, '..', 'data', 'rfid_tags.json');
 const attendancePath = require('path').join(__dirname, '..', 'data', 'Attendance.json');
 
-const bot = require('../telegram/telegramBot')(); // Initialize bot
 
 // Middleware to check API Key (if you implemented it)
 const apiKey = config.apiKey;

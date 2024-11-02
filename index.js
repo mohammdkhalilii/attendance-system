@@ -8,7 +8,7 @@ const addRfidRoute = require('./routes/addRfid');
 const initializeBot = require('./telegram/telegramBot');
 
 // Initialize Telegram Bot
-initializeBot();
+require('./telegram/telegramBot'); // Simply require it to initialize
 
 // Initialize Express App
 const app = express();
