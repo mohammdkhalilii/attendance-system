@@ -18,8 +18,7 @@ const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-// Optionally set locale to 'fa' for Persian language support
-dayjs.locale('fa');
+
 
 
 
@@ -50,7 +49,8 @@ dayjs.locale('fa');
 // }
 
 function getCurrentTime() {
-    const now = dayjs();
+    const now = dayjs().tz("Asia/Tehran");
+
     // const gregorianDate = {
     //     year: now.year(),
     //     month: now.month() + 1, // dayjs months are 0-based
@@ -342,7 +342,7 @@ app.post('/check-rfid', (req, res) => {
         saveAttendance(attendance);
 
         // Prepare notification message
-        const actionText = action === 'Enter' ? 'وارد شد' : 'خارج شد';
+        const actionText = action === 'Enter' ? 'وارد شد🟢' : 'خارج شد🔴';
         const message = `${userName} ${actionText} در  ${currentTime}`;
 
         // Send notification to all authorized Telegram users
