@@ -52,7 +52,7 @@ dayjs.tz.setDefault("Asia/Tehran")
 
 function getCurrentTime() {
     const now = dayjs();
-    const folan = dayjs.tz("Asia/Tehran");
+    const folan = dayjs().tz("Asia/Tehran");
 
     // const gregorianDate = {
     //     year: now.year(),
