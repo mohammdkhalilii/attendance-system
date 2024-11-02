@@ -62,20 +62,17 @@ function getCurrentTime() {
     //     minute: now.minute(),
     // };
     console.log(now,folan);
-
+    
     // const jalalJoon  = new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'short'}).format(folan);
-    const jalalJoon  = new Intl.DateTimeFormat('fa-IR', {formatMatcher:"best fit",dateStyle: 'full', timeStyle: 'short'}).format(now);
-    const jalalJoonz  = new Intl.DateTimeFormat('fa-IR', {formatMatcher:"best fit",dateStyle: 'full', timeStyle: 'short'}).format(folan);
+    const jalalJoon  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short'}).format(now);
+    const jalalJoonz  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short',timeZone: 'Asia/Tehran',}).format(folan);
 
 
     console.log(jalalJoon,jalalJoonz);
     
-
-
-
     // const jDate = jalaali.toJalaali(gregorianDate.year, gregorianDate.month, gregorianDate.day);
     // const formattedJalaliDate = `${jDate.jy}-${String(jDate.jm).padStart(2, '0')}-${String(jDate.jd).padStart(2, '0')} ${String(gregorianDate.hour).padStart(2, '0')}:${String(gregorianDate.minute).padStart(2, '0')}`;
-    return jalalJoon;
+    return jalalJoonz;
 }
 
 // =========================
