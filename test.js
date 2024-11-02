@@ -52,6 +52,7 @@ dayjs.tz.setDefault("Asia/Tehran")
 
 function getCurrentTime() {
     const now = dayjs();
+    const folan = dayjs.tz("Asia/Tehran");
 
     // const gregorianDate = {
     //     year: now.year(),
@@ -60,9 +61,9 @@ function getCurrentTime() {
     //     hour: now.hour(),
     //     minute: now.minute(),
     // };
+    console.log(now,folan);
     const jalalJoon  = new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'short'}).format(now)
 
-    console.log(jalalJoon);
 
 
     // const jDate = jalaali.toJalaali(gregorianDate.year, gregorianDate.month, gregorianDate.day);
