@@ -18,6 +18,8 @@ const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+dayjs.tz.setDefault("Asia/Tehran")
+
 
 
 
@@ -49,7 +51,7 @@ dayjs.extend(timezone);
 // }
 
 function getCurrentTime() {
-    const now = dayjs().tz("Asia/Tehran");
+    const now = dayjs();
 
     // const gregorianDate = {
     //     year: now.year(),
