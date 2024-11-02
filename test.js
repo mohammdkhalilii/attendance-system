@@ -62,10 +62,10 @@ function getCurrentTime() {
     //     minute: now.minute(),
     // };
     console.log(now,folan);
-    
+
     // const jalalJoon  = new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'short'}).format(folan);
-    const jalalJoon  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short'}).format(now);
-    const jalalJoonz  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short'}).format(folan);
+    const jalalJoon  = new Intl.DateTimeFormat('fa-IR', {formatMatcher:"best fit",dateStyle: 'full', timeStyle: 'short'}).format(now);
+    const jalalJoonz  = new Intl.DateTimeFormat('fa-IR', {formatMatcher:"best fit",dateStyle: 'full', timeStyle: 'short'}).format(folan);
 
 
     console.log(jalalJoon,jalalJoonz);
