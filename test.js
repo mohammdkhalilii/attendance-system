@@ -28,51 +28,33 @@ dayjs.extend(timezone);
 // Helper Functions
 // =========================
 
-/**
- * Returns the current time in UTC+3:30 as a formatted string.
- * Format: YYYY-MM-DD HH:mm:ss
- */
-// function getCurrentTime() {
-//     const date = new Date();
-//     // Convert to UTC time in milliseconds
-//     const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
-//     // Define the offset for UTC+3:30 in milliseconds
-//     const offset = 3.5 * 60 * 60 * 1000;
-//     const dateUTCplus3_30 = new Date(utc + offset);
-//     // Format the date as YYYY-MM-DD HH:mm:ss
-//     const year = dateUTCplus3_30.getFullYear();
-//     const month = String(dateUTCplus3_30.getMonth() + 1).padStart(2, '0');
-//     const day = String(dateUTCplus3_30.getDate()).padStart(2, '0');
+function getCurrentTimeJalili() {
+    const now = dayjs();
+    const jalalJoon  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short',timeZone: 'Asia/Tehran'}).format(now);
 
-
-//     const hours = String(dateUTCplus3_30.getHours()).padStart(2, '0');
-//     const minutes = String(dateUTCplus3_30.getMinutes()).padStart(2, '0');
-//     return `${year}-${month}-${day} ${hours}:${minutes}`;
-// }
+    return jalalJoon;
+}
 
 function getCurrentTime() {
-    const now = dayjs();
-    const folan = dayjs().tz("Asia/Tehran");
-
-    // const gregorianDate = {
-    //     year: now.year(),
-    //     month: now.month() + 1, // dayjs months are 0-based
-    //     day: now.date(),
-    //     hour: now.hour(),
-    //     minute: now.minute(),
-    // };
-    console.log(now,folan);
+    // Get current time in Asia/Tehran timezone
+    const now = dayjs().tz("Asia/Tehran");
     
-    // const jalalJoon  = new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'short'}).format(folan);
-    const jalalJoon  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short'}).format(now);
-    const jalalJoonz  = new Intl.DateTimeFormat('fa-IR', {dateStyle: 'full', timeStyle: 'short',timeZone: 'Asia/Tehran',}).format(folan);
-
-
-    console.log(jalalJoon,jalalJoonz);
+    // Extract Gregorian date components
+    const gregorianDate = {
+        year: now.year(),
+        month: now.month() + 1, // dayjs months are 0-based
+        day: now.date(),
+        hour: now.hour(),
+        minute: now.minute(),
+    };
     
-    // const jDate = jalaali.toJalaali(gregorianDate.year, gregorianDate.month, gregorianDate.day);
-    // const formattedJalaliDate = `${jDate.jy}-${String(jDate.jm).padStart(2, '0')}-${String(jDate.jd).padStart(2, '0')} ${String(gregorianDate.hour).padStart(2, '0')}:${String(gregorianDate.minute).padStart(2, '0')}`;
-    return jalalJoonz;
+    // Convert Gregorian to Jalali
+    const jDate = jalaali.toJalaali(gregorianDate.year, gregorianDate.month, gregorianDate.day);
+    
+    // Format Jalali date and time
+    const formattedJalaliDate = `${jDate.jYear}-${String(jDate.jMonth).padStart(2, '0')}-${String(jDate.jDay).padStart(2, '0')} ${String(gregorianDate.hour).padStart(2, '0')}:${String(gregorianDate.minute).padStart(2, '0')}`;
+    
+    return formattedJalaliDate;
 }
 
 // =========================
@@ -336,13 +318,14 @@ app.post('/check-rfid', (req, res) => {
 
         // Get current time in UTC+3:30
         const currentTime = getCurrentTime();
+        const currentTime_fa = getCurrentTimeJalili();
 
         // Log to Attendance.json
         const attendanceEntry = {
             rfid: rfid,
             name: userName,
             action: action,
-            time: currentTime
+            time: currentTime,
         };
 
         attendance.push(attendanceEntry);
@@ -350,7 +333,7 @@ app.post('/check-rfid', (req, res) => {
 
         // Prepare notification message
         const actionText = action === 'Enter' ? '🟢 وارد شد' : '🔴 خارج شد';
-        const message = `${userName} ${actionText} در  ${currentTime}`;
+        const message = `${userName} ${actionText} در  ${currentTime_fa}`;
 
         // Send notification to all authorized Telegram users
         authorizedUsers.forEach(chatId => {
