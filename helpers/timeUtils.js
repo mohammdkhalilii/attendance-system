@@ -23,7 +23,7 @@ function formatJalaliDate(dateObj) {
     };
     
     const jDate = jalaali.toJalaali(gregorianDate.year, gregorianDate.month, gregorianDate.day);
-    const formattedJalaliDate = `${jDate.jYear}-${String(jDate.jMonth).padStart(2, '0')}-${String(jDate.jDay).padStart(2, '0')} ${String(gregorianDate.hour).padStart(2, '0')}:${String(gregorianDate.minute).padStart(2, '0')}`;
+    const formattedJalaliDate = `${jDate.jy}-${String(jDate.jm).padStart(2, '0')}-${String(jDate.jd).padStart(2, '0')} ${String(gregorianDate.hour).padStart(2, '0')}:${String(gregorianDate.minute).padStart(2, '0')}`;
     
     return formattedJalaliDate;
 }
