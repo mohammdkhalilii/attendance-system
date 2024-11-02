@@ -62,7 +62,7 @@ function getCurrentTime() {
     //     minute: now.minute(),
     // };
     console.log(now,folan);
-    const jalalJoon  = new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'short'}).format(now)
+    const jalalJoon  = new Intl.DateTimeFormat('fa-IR-u-nu-latn', {dateStyle: 'full', timeStyle: 'short'}).format(folan)
 
 
 
