@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const { loadJSON, saveJSON } = require('../data/loadData');
 const config = require('../config/config');
-const { getCurrentTime } = require('../helpers/timeUtils');
+const { getCurrentTime,getCurrentTimeJalili } = require('../helpers/timeUtils');
 const { calculateReport } = require('../helpers/reportUtils');
 
 const bot = require('../telegram/telegramBot'); // Import the existing bot instance
