@@ -14,7 +14,7 @@ function jalaliToGregorian(jalaliDateStr) {
     const [jy, jm, jd] = datePart.split('-').map(Number);
     const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd);
     const [hour, minute] = timePart.split(':').map(Number);
-    return dayjs().year(gy).month(gm - 1).date(gd).hour(hour).minute(minute).second(0).millisecond(0);
+    return dayjs().year(gy).month(gm - 1).date(gd).hour(hour).minute(minute).second(0).millisecond(0).tz("Asia/Tehran");
 }
 
 /**
@@ -74,8 +74,8 @@ function calculateReport(rfid, startDate, endDate, attendance) {
     const { gy: startGY, gm: startGM, gd: startGD } = jalaali.toGregorian(startJY, startJM, startJD);
     const { gy: endGY, gm: endGM, gd: endGD } = jalaali.toGregorian(endJY, endJM, endJD);
     
-    const startDateGregorian = dayjs().year(startGY).month(startGM - 1).date(startGD).startOf('day');
-    const endDateGregorian = dayjs().year(endGY).month(endGM - 1).date(endGD).endOf('day');
+    const startDateGregorian = dayjs().year(startGY).month(startGM - 1).date(startGD).startOf('day').tz("Asia/Tehran");
+    const endDateGregorian = dayjs().year(endGY).month(endGM - 1).date(endGD).endOf('day').tz("Asia/Tehran");
     
     // Filter entries for the specific user and date range
     const userEntries = attendance.filter(entry => {

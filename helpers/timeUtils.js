@@ -4,9 +4,11 @@ const dayjs = require('dayjs');
 const jalaali = require('jalaali-js');
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
+const isBetween = require('dayjs/plugin/isBetween'); // Added isBetween plugin
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isBetween); // Extend dayjs with isBetween
 
 /**
  * Formats a dayjs object to Jalali date string.
@@ -82,13 +84,12 @@ function getCurrentMonthRange() {
  */
 function getLastWeekRange() {
     const now = dayjs().tz("Asia/Tehran");
-    // Determine the current week's Saturday
-    let currentWeekStart = now.day(6); // day(6) sets to Saturday of the current week
-    if (now.day() !== 6) { // If today is not Saturday, adjust to last week's Saturday
-        currentWeekStart = now.day(6).subtract(1, 'week');
+
+    // Determine the last completed week's Saturday
+    let lastWeekStart = now.day(6); // Sets to this week's Saturday
+    if (now.day() !== 6) { // If today is not Saturday, set to last week's Saturday
+        lastWeekStart = now.day(6).subtract(1, 'week');
     }
-    // Last week starts one week before currentWeekStart
-    const lastWeekStart = currentWeekStart.subtract(1, 'week');
     const lastWeekEnd = lastWeekStart.add(6, 'day'); // Friday
 
     const startJalali = formatJalaliDate(lastWeekStart);
