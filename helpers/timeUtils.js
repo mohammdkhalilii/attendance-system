@@ -75,9 +75,44 @@ function getCurrentMonthRange() {
     return { startDate: startJalali.split(' ')[0], endDate: endJalali.split(' ')[0] };
 }
 
+/**
+ * Returns the start and end dates for the last week in Jalali format.
+ * Week starts on Saturday and ends on Friday.
+ * @returns {Object} - { startDate, endDate }
+ */
+function getLastWeekRange() {
+    const now = dayjs().tz("Asia/Tehran");
+    const lastWeek = now.subtract(1, 'week');
+    const startOfLastWeek = lastWeek.startOf('week').add(6, 'day'); // Saturday
+    const endOfLastWeek = lastWeek.endOf('week').add(6, 'day'); // Friday
+
+    const startJalali = formatJalaliDate(startOfLastWeek);
+    const endJalali = formatJalaliDate(endOfLastWeek);
+
+    return { startDate: startJalali.split(' ')[0], endDate: endJalali.split(' ')[0] };
+}
+
+/**
+ * Returns the start and end dates for the last month in Jalali format.
+ * @returns {Object} - { startDate, endDate }
+ */
+function getLastMonthRange() {
+    const now = dayjs().tz("Asia/Tehran");
+    const lastMonth = now.subtract(1, 'month');
+    const startOfLastMonth = lastMonth.startOf('month');
+    const endOfLastMonth = lastMonth.endOf('month');
+
+    const startJalali = formatJalaliDate(startOfLastMonth);
+    const endJalali = formatJalaliDate(endOfLastMonth);
+
+    return { startDate: startJalali.split(' ')[0], endDate: endJalali.split(' ')[0] };
+}
+
 module.exports = {
     getCurrentTime,
     getCurrentWeekRange,
     getCurrentMonthRange,
+    getLastWeekRange,      // Newly added
+    getLastMonthRange,     // Newly added
     getCurrentTimeJalili
 };

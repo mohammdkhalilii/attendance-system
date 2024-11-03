@@ -1,7 +1,7 @@
 // helpers/reportUtils.js
 
 const dayjs = require('dayjs');
-const { getCurrentTime, getCurrentWeekRange, getCurrentMonthRange } = require('./timeUtils');
+const { getLastWeekRange, getLastMonthRange, getCurrentTime, getCurrentTimeJalili } = require('./timeUtils');
 
 /**
  * Loads attendance records from Attendance.json.
@@ -112,28 +112,28 @@ function generateReport(startDate, endDate, attendance) {
 }
 
 /**
- * Generates a weekly report.
+ * Generates a **last week** report.
  * @param {string} attendancePath - Path to Attendance.json
  * @returns {Object} - Report data
  */
-function generateWeeklyReport(attendancePath) {
-    const { startDate, endDate } = getCurrentWeekRange();
+function generateLastWeekReport(attendancePath) {
+    const { startDate, endDate } = getLastWeekRange();
     const attendance = loadAttendance(attendancePath);
     return generateReport(startDate, endDate, attendance);
 }
 
 /**
- * Generates a monthly report.
+ * Generates a **last month** report.
  * @param {string} attendancePath - Path to Attendance.json
  * @returns {Object} - Report data
  */
-function generateMonthlyReport(attendancePath) {
-    const { startDate, endDate } = getCurrentMonthRange();
+function generateLastMonthReport(attendancePath) {
+    const { startDate, endDate } = getLastMonthRange();
     const attendance = loadAttendance(attendancePath);
     return generateReport(startDate, endDate, attendance);
 }
 
 module.exports = {
-    generateWeeklyReport,
-    generateMonthlyReport,
+    generateLastWeekReport,    // Updated to generate last week report
+    generateLastMonthReport,   // Updated to generate last month report
 };

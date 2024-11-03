@@ -2,7 +2,7 @@
 
 const TelegramBot = require('node-telegram-bot-api');
 const { loadJSON, saveJSON } = require('../data/loadData');
-const { generateWeeklyReport, generateMonthlyReport } = require('../helpers/reportUtils');
+const { generateLastWeekReport, generateLastWeekReport } = require('../helpers/reportUtils');
 const config = require('../config/config');
 const path = require('path');
 
@@ -81,7 +81,7 @@ bot.onText(/\/weekly_report/, (msg) => {
         return;
     }
 
-    const report = generateWeeklyReport(attendancePath);
+    const report = generateLastWeekReport(attendancePath);
     const { startDate, endDate, reports } = report;
 
     if (reports.length === 0) {
@@ -109,7 +109,7 @@ bot.onText(/\/monthly_report/, (msg) => {
         return;
     }
 
-    const report = generateMonthlyReport(attendancePath);
+    const report = generateLastMonthReport(attendancePath);
     const { startDate, endDate, reports } = report;
 
     if (reports.length === 0) {
