@@ -2,7 +2,7 @@
 
 const TelegramBot = require('node-telegram-bot-api');
 const { loadJSON, saveJSON } = require('../data/loadData');
-const { generateLastWeekReport, generateLastWeekReport } = require('../helpers/reportUtils');
+const { generateLastWeekReport, generateLastMonthReport } = require('../helpers/reportUtils');
 const config = require('../config/config');
 const path = require('path');
 
