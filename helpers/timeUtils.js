@@ -82,12 +82,17 @@ function getCurrentMonthRange() {
  */
 function getLastWeekRange() {
     const now = dayjs().tz("Asia/Tehran");
-    const lastWeek = now.subtract(1, 'week');
-    const startOfLastWeek = lastWeek.startOf('week').add(6, 'day'); // Saturday
-    const endOfLastWeek = lastWeek.endOf('week').add(6, 'day'); // Friday
+    // Determine the current week's Saturday
+    let currentWeekStart = now.day(6); // day(6) sets to Saturday of the current week
+    if (now.day() !== 6) { // If today is not Saturday, adjust to last week's Saturday
+        currentWeekStart = now.day(6).subtract(1, 'week');
+    }
+    // Last week starts one week before currentWeekStart
+    const lastWeekStart = currentWeekStart.subtract(1, 'week');
+    const lastWeekEnd = lastWeekStart.add(6, 'day'); // Friday
 
-    const startJalali = formatJalaliDate(startOfLastWeek);
-    const endJalali = formatJalaliDate(endOfLastWeek);
+    const startJalali = formatJalaliDate(lastWeekStart);
+    const endJalali = formatJalaliDate(lastWeekEnd);
 
     return { startDate: startJalali.split(' ')[0], endDate: endJalali.split(' ')[0] };
 }

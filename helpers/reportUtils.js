@@ -1,7 +1,21 @@
 // helpers/reportUtils.js
 
 const dayjs = require('dayjs');
-const { getLastWeekRange, getLastMonthRange, getCurrentTime, getCurrentTimeJalili } = require('./timeUtils');
+const jalaali = require('jalaali-js');
+const { getLastWeekRange, getLastMonthRange } = require('./timeUtils');
+
+/**
+ * Converts Jalali date string to Day.js Gregorian object.
+ * @param {string} jalaliDateStr - Format: 'jYYYY-jMM-jDD HH:mm'
+ * @returns {dayjs.Dayjs} - Gregorian Day.js object.
+ */
+function jalaliToGregorian(jalaliDateStr) {
+    const [datePart, timePart] = jalaliDateStr.split(' ');
+    const [jy, jm, jd] = datePart.split('-').map(Number);
+    const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd);
+    const [hour, minute] = timePart.split(':').map(Number);
+    return dayjs().year(gy).month(gm - 1).date(gd).hour(hour).minute(minute).second(0).millisecond(0);
+}
 
 /**
  * Loads attendance records from Attendance.json.
@@ -54,16 +68,26 @@ function saveAttendance(attendancePath, attendance) {
  * @returns {Object} - { totalWorkTime: "HH:mm", totalDays: number }
  */
 function calculateReport(rfid, startDate, endDate, attendance) {
+    // Convert startDate and endDate from Jalali to Gregorian
+    const [startJY, startJM, startJD] = startDate.split('-').map(Number);
+    const [endJY, endJM, endJD] = endDate.split('-').map(Number);
+    const { gy: startGY, gm: startGM, gd: startGD } = jalaali.toGregorian(startJY, startJM, startJD);
+    const { gy: endGY, gm: endGM, gd: endGD } = jalaali.toGregorian(endJY, endJM, endJD);
+    
+    const startDateGregorian = dayjs().year(startGY).month(startGM - 1).date(startGD).startOf('day');
+    const endDateGregorian = dayjs().year(endGY).month(endGM - 1).date(endGD).endOf('day');
+    
     // Filter entries for the specific user and date range
     const userEntries = attendance.filter(entry => {
         if (entry.rfid !== rfid) return false;
-        const entryDate = entry.time.split(' ')[0]; // Extract date part
-        return entryDate >= startDate && entryDate <= endDate;
+        // Convert entry.time to Gregorian
+        const entryDate = jalaliToGregorian(entry.time);
+        return entryDate.isBetween(startDateGregorian, endDateGregorian, null, '[]'); // inclusive
     });
 
     // Sort entries by time
     userEntries.sort((a, b) => {
-        return dayjs(a.time, 'jYYYY-jMM-jDD HH:mm') - dayjs(b.time, 'jYYYY-jMM-jDD HH:mm');
+        return jalaliToGregorian(a.time).valueOf() - jalaliToGregorian(b.time).valueOf();
     });
 
     let totalMinutes = 0;
@@ -72,14 +96,16 @@ function calculateReport(rfid, startDate, endDate, attendance) {
     for (let i = 0; i < userEntries.length; i++) {
         const entry = userEntries[i];
         if (entry.action === 'Enter') {
-            const enterTime = dayjs(entry.time, 'jYYYY-jMM-jDD HH:mm');
-            // Find the next 'Exit' entry
-            const exitEntry = userEntries.find(e => e.action === 'Exit' && dayjs(e.time, 'jYYYY-jMM-jDD HH:mm').isAfter(enterTime));
+            const enterTime = jalaliToGregorian(entry.time);
+            // Find the next 'Exit' entry after enterTime
+            const exitEntry = userEntries.find(e => e.action === 'Exit' && jalaliToGregorian(e.time).isAfter(enterTime));
             if (exitEntry) {
-                const exitTime = dayjs(exitEntry.time, 'jYYYY-jMM-jDD HH:mm');
+                const exitTime = jalaliToGregorian(exitEntry.time);
                 const diff = exitTime.diff(enterTime, 'minute');
                 totalMinutes += diff;
-                attendanceDays.add(entry.time.split(' ')[0]); // Add the day
+                // Add the day in Jalali format
+                const day = entry.time.split(' ')[0];
+                attendanceDays.add(day);
                 // Skip to the exit entry
                 i = userEntries.indexOf(exitEntry);
             }
