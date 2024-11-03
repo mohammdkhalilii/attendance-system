@@ -117,6 +117,8 @@ bot.onText(/\/monthly_report/, (msg) => {
         return;
     }
 
+    console.log("Hello")
+
     let message = `*ریپورت ماهیانه از ${startDate} تا ${endDate}:*\n\n`;
     reports.forEach(userReport => {
         message += `*نام:* ${userReport.name}\n`;
